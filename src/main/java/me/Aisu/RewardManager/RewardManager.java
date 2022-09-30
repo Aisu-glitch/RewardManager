@@ -1,10 +1,4 @@
-package Aisu.RewardPools;
-
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.logging.Handler;
-import java.util.logging.Logger;
+package me.Aisu.RewardManager;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,6 +11,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.logging.Handler;
+import java.util.logging.Logger;
 
 public class RewardManager extends JavaPlugin {
 
@@ -166,7 +166,7 @@ public class RewardManager extends JavaPlugin {
     }
 
     // Reward manager
-    public static void GiveTable(CommandSender Sender, String strRecipient, String strRewardType) {
+    public static void GiveTable(CommandSender Sender , String strRecipient, String strRewardGroup) {
         boolean PlayerExists = false;
         boolean RewardExists = false;
         String RewardType = null;
@@ -176,7 +176,7 @@ public class RewardManager extends JavaPlugin {
             PlayerExists = true;
         }
         for (String TempRewardType : Objects.requireNonNull(RewardManager.ConfigLoc.getConfigurationSection("RewardSource")).getKeys(false)) {
-            if (TempRewardType.equalsIgnoreCase(strRewardType)) {
+            if (TempRewardType.equalsIgnoreCase(strRewardGroup)) {
                 RewardExists = true;
                 RewardType = TempRewardType;
             }

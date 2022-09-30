@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/002 - RewardPools.iml" filepath="$PROJECT_DIR$/002 - RewardPools.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RewardManager.iml" filepath="$PROJECT_DIR$/RewardManager.iml" />
     </modules>
   </component>
 </project>

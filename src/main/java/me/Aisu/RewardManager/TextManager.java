@@ -1,14 +1,12 @@
-package Aisu.RewardPools;
+package me.Aisu.RewardManager;
 
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.logging.Level;
-
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.HashMap;
+import java.util.Objects;
 
 public class TextManager {
     public TextManager(RewardManager plugin) {

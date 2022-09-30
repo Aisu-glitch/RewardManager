@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="002 - RewardPools:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/002___RewardPools_jar</output-path>
-    <root id="archive" name="002 - RewardPools.jar">
-      <element id="module-output" name="002 - RewardPools" />
-    </root>
-  </artifact>
-</component>

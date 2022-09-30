@@ -1,0 +1,5 @@
+name: RewardManager
+version: '${project.version}'
+main: me.Aisu.RewardManager.RewardManager
+api-version: 1.19
+authors: [ Aisuboirad ]

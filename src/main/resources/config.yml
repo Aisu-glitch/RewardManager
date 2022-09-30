@@ -1,0 +1,138 @@
+##################################################################################################
+##¤════════════════════════════════════════════════════════════════════════════════════════════¤##
+##║¤════════════════════════These are the rewards based on chancetype.════════════════════════¤║##
+##║¤══════════════These can be colourcoded using the colour codes &* listed here══════════════¤║##
+##║¤═════════════════════════http://minecraft.tools/en/color-code.php═════════════════════════¤║##
+##║¤═══════════════════Please use the format as below and start at reward0.═══════════════════¤║##
+##¤════════════════════════════════════════════════════════════════════════════════════════════¤##
+##################################################################################################
+
+##################################################################################################
+## RewardSource:       This will list all the possible reward groups and their rewards under it ##
+##     Coal:                          This will list all the rewards u can get from mining coal ##
+##         Dirt: 100                                 Dirt in this case has a roll chance of 100 ##
+##         Godsword: 100                         Godsword in this case has a roll chance of 100 ##
+##                  These values mean they both have a chance of 100 on the total chance amount ##
+##                               So 100 + 100 = 200 and they both have a 100/200 chance to drop ##
+##                                             Respectively they both have a 50% chance to drop ##
+##################################################################################################
+
+RewardSource:
+    BeginnerScroll:
+        Dirt: 100
+    lvl1Scroll:
+        Dirt: 100
+    lvl2Scroll:
+        Dirt: 50
+        SharpDirt: 100
+    lvl3Scroll:
+        Dirt: 25
+        SharpDirt: 50
+        GodSword: 100
+        GodAxe: 100
+
+##################################################################################################
+## Reward:                                                       This is the name of the reward ##
+##     Type: Item                     The type of reward can be set "Command", "Item" Or "Both" ##
+##     Commands:                                The "-" under this can be followed by a command ##
+##         - ""                   If you dont have enough with 1, you're in luck u can add more ##
+##     Item:                                 These are the parts of the item reward if selected ##
+##         Name: ""                                                This is the name of the item ##
+##         MaterialName: ""                              This is the material type the item has ##
+##         Amount: 1                               This is how much of the item the player gets ##
+##         Enchantments:          If you dont have enough with 1, you're in luck u can add more ##
+##         Lore:                       Lore lines are the info text when hovering over the item ##
+##             - ""               If you dont have enough with 1, you're in luck u can add more ##
+##     Message: ""                                 This is the message displayed to the claimer ##
+## Godsword:                                                        Here is a filled in example ##
+##     Type: Both                                                                               ##
+##     Commands:                                                                                ##
+##         - "Broadcast Someone just got a [God sword]"                                         ##
+##     Item:                                                                                    ##
+##         Name: "[God sword]"                                                                  ##
+##         MaterialName: "Diamond_Sword"                                                        ##
+##         Amount: 1                                                                            ##
+##         Enchantments:                                                                        ##
+##             sharpness: 20                                                                    ##
+##             knockback: 20                                                                    ##
+##         Lore:                                                                                ##
+##             - "It's pretty sharp"                                                            ##
+##             - "it should do its job"                                                         ##
+##     Message: "you got a [God sword]"                                                         ##
+##################################################################################################
+
+Rewards:
+    Example:
+        Type: "Item"
+        Commands:
+            - 
+        Item:
+            Name: "This is a placeholder"
+            MaterialName: "air"
+            Amount:
+                Min: 1
+                Max: 1
+            Enchantments:
+                [EnchantmentName]: [EnchantmentLevel]
+            Lore:
+        Message: "Contact the server admin, developer or owner, this is not ment to be a reward"
+    Dirt:
+        Type: "Item"
+        Commands: 
+            - 
+        Item: 
+            Name: 
+            MaterialName: "Dirt"
+            Amount: 
+                Min: 1
+                Max: 1
+            Enchantments:
+            Lore:
+        Message: "you got dirt"
+    SharpDirt: 
+        Type: "Item"
+        Commands: 
+            - 
+        Item: 
+            Name: "This is a piece of dirt"
+            MaterialName: "Dirt"
+            Amount: 
+                Min: 1
+                Max: 1
+            Enchantments:
+                sharpness: 5 
+            Lore:
+                - "This dirt is pretty sharp"
+        Message: "you got sharp dirt"
+    GodSword:
+        Type: "Both"
+        Commands:
+            - "Broadcast Someone just got a GodSword"
+        Item: 
+            Name: "&b[&4God Sword&b]"
+            MaterialName: "Diamond_sword"
+            Amount: 
+                Min: 1
+                Max: 1
+            Enchantments:
+                sharpness: 10
+            Lore:
+                - "Some say this sword belongs to a god"
+                - "I say it belongs to me"
+        Message: "you got a %ITEM%"
+    GodAxe:
+        Type: "Both"
+        Commands:
+            - "Broadcast Someone just got a GodAxe"
+        Item:
+            Name: "&b[&4God Axe&b]"
+            MaterialName: "Diamond_axe"
+            Amount: 
+                Min: 1
+                Max: 1
+            Enchantments:
+                sharpness: 10
+            Lore:
+                - "Some say this axe belongs to a god"
+                - "I say it belongs to me"
+        Message: "you got a %ITEM%"
