@@ -3,3 +3,15 @@ version: '${project.version}'
 main: me.Aisu.RewardManager.RewardManager
 api-version: 1.19
 authors: [ Aisuboirad ]
+commands:
+   RM:
+      description: Gives you this help menu
+      usage: /&lt;command&gt;
+   RM Reload:
+      description: Reloads the chance list
+      permission: RewardPools_Manager.Reload
+      usage: /&lt;command&gt;
+   RM Give:
+      description: gives a reward from the give rewardpool
+      permission: RewardPools_Manager.Reward
+      usage: /&lt;command&gt; <player> <rewardpool>

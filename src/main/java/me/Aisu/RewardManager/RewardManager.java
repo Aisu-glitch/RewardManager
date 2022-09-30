@@ -290,7 +290,7 @@ public class RewardManager extends JavaPlugin {
     // Command listener
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         // Checking if command was issued towards this plugin
-        if (cmd.getName().equalsIgnoreCase("RP") && !(sender instanceof Player)) {
+        if (cmd.getName().equalsIgnoreCase("RM") && !(sender instanceof Player)) {
             switch (args.length) {
                 case 3: {
                     if (args[0].equalsIgnoreCase("Give")) {
@@ -308,7 +308,7 @@ public class RewardManager extends JavaPlugin {
                 }
             }
         }
-        if (cmd.getName().equalsIgnoreCase("RP") && (sender instanceof Player player)) {
+        if (cmd.getName().equalsIgnoreCase("RM") && (sender instanceof Player player)) {
             // Getting player
             if (player.hasPermission("RewardManager_Manager")) {
                 switch (args.length) {
