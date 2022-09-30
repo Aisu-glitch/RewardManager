@@ -69,108 +69,107 @@ public class RewardManager extends JavaPlugin {
     }
 
     private static String getTime() {
-        Date cal = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        return (sdf.format(cal.getTime()));
+        Date date = new Date();
+        return (new SimpleDateFormat("HH:mm:ss").format(date.getTime()));
     }
 
     private static ItemStack ItemBuilder(CommandSender Sender, String strRewardName) {
         // Setting variables needed to build an ItemStack and its metadata
-        ItemStack istFinalReward = new ItemStack(Material.DIRT);
-        ItemMeta imeFinalMeta = istFinalReward.getItemMeta();
-        Material matMaterial;
-        int intAmountMin;
-        int intAmountMax;
-        int intAmount;
+        ItemStack FinalReward = new ItemStack(Material.DIRT);
+        ItemMeta FinalMeta = FinalReward.getItemMeta();
+        Material material;
+        int AmountMin;
+        int AmountMax;
+        int Amount;
         HashMap<String, Integer> Enchantments = new HashMap<>();
-        List<String> strLore;
-        String strRewardLocation = "Rewards." + strRewardName;
-        String strName = "";
+        List<String> Lore;
+        String RewardLocation = "Rewards." + strRewardName;
+        String Name = "";
         // Getting the info from the config to build the ItemStack
-        matMaterial = Material.getMaterial(Objects.requireNonNull(ConfigLoc.getString(strRewardLocation + ".Item.MaterialName")).toUpperCase());
+        material = Material.getMaterial(Objects.requireNonNull(ConfigLoc.getString(RewardLocation + ".Item.MaterialName")).toUpperCase());
         try {
-            intAmountMin = Integer.parseInt(Objects.requireNonNull(ConfigLoc.getString(strRewardLocation + ".Item.Amount.Min")));
-            intAmountMax = Integer.parseInt(Objects.requireNonNull(ConfigLoc.getString(strRewardLocation + ".Item.Amount.Max")));
+            AmountMin = Integer.parseInt(Objects.requireNonNull(ConfigLoc.getString(RewardLocation + ".Item.Amount.Min")));
+            AmountMax = Integer.parseInt(Objects.requireNonNull(ConfigLoc.getString(RewardLocation + ".Item.Amount.Max")));
         } catch (NullPointerException | NumberFormatException e) {
             Sender.sendMessage(ChatColor.RED + "The reward you got seems to have incorrect amounts.");
             Sender.sendMessage(ChatColor.RED + "Please contact an admin, developer or owner about this issue,");
             Sender.sendMessage(ChatColor.RED + "tell them the reward is named " + ChatColor.AQUA + strRewardName + ChatColor.RED + ".");
             Sender.sendMessage(ChatColor.RED + "This error occurred at " + ChatColor.AQUA + getTime() + ChatColor.RED + ".");
-            log.warning( ChatColor.RED + "INVALID " + ChatColor.AQUA + "AMOUNT " + ChatColor.RED + "SETUP IN REWARDPOOLS CONFIG.YML @ " + ChatColor.AQUA + strRewardLocation);
+            log.warning( ChatColor.RED + "INVALID " + ChatColor.AQUA + "AMOUNT " + ChatColor.RED + "SETUP IN REWARDPOOLS CONFIG.YML @ " + ChatColor.AQUA + RewardLocation);
             return null;
         }
-        if (intAmountMin != intAmountMax) {
-            intAmount = new Random().nextInt(intAmountMax - intAmountMin) + intAmountMin;
+        if (AmountMin != AmountMax) {
+            Amount = new Random().nextInt(AmountMax - AmountMin) + AmountMin;
         } else {
-            intAmount = intAmountMin;
+            Amount = AmountMin;
         }
         try {
-            strName = TextManager.colorize(Objects.requireNonNull(ConfigLoc.getString(strRewardLocation + ".Item.Name")));
+            Name = TextManager.colorize(Objects.requireNonNull(ConfigLoc.getString(RewardLocation + ".Item.Name")));
         } catch (NullPointerException ignored) {
         }
         // Try to fetch enchantments
         try {
-            for (String strEnch : Objects.requireNonNull(ConfigLoc.getConfigurationSection(strRewardLocation + ".Item.Enchantments")).getKeys(false)) {
+            for (String strEnch : Objects.requireNonNull(ConfigLoc.getConfigurationSection(RewardLocation + ".Item.Enchantments")).getKeys(false)) {
                 try {
-                    Enchantments.put(strEnch, Integer.parseInt(Objects.requireNonNull(ConfigLoc.getString(strRewardLocation + ".Item.Enchantments." + strEnch))));
+                    Enchantments.put(strEnch, Integer.parseInt(Objects.requireNonNull(ConfigLoc.getString(RewardLocation + ".Item.Enchantments." + strEnch))));
                 } catch (NumberFormatException e) {
-                    log.warning(ChatColor.RED + "INVALID " + ChatColor.AQUA + "ENCHANTMENT_LEVEL " + ChatColor.RED + "IN REWARDPOOLS CONFIG.YML @ " + ChatColor.AQUA + strRewardLocation + ".Item.Enchantments." + strEnch);
+                    log.warning(ChatColor.RED + "INVALID " + ChatColor.AQUA + "ENCHANTMENT_LEVEL " + ChatColor.RED + "IN REWARDPOOLS CONFIG.YML @ " + ChatColor.AQUA + RewardLocation + ".Item.Enchantments." + strEnch);
                 }
             }
         } catch (NullPointerException e) {
             // If something is in the enchants but is not a recognized enchant notify log and player something went wrong
-            if (!ConfigLoc.getStringList(strRewardLocation + ".Item.Enchantments").isEmpty()) {
+            if (!ConfigLoc.getStringList(RewardLocation + ".Item.Enchantments").isEmpty()) {
                 Sender.sendMessage(ChatColor.RED + "The reward you got seems to have incorrect enchantments.");
                 Sender.sendMessage(ChatColor.RED + "Please contact an admin, developer or owner about this issue,");
                 Sender.sendMessage(ChatColor.RED + "tell them the reward is named " + ChatColor.AQUA + strRewardName + ChatColor.RED + ".");
                 Sender.sendMessage(ChatColor.RED + "This error occurred at " + ChatColor.AQUA + getTime() + ChatColor.RED + ".");
-                log.warning(ChatColor.RED + "INVALID " + ChatColor.AQUA + "ENCHANTMENT " + ChatColor.RED + "SETUP IN REWARDPOOLS CONFIG.YML @ " + ChatColor.AQUA + strRewardLocation);
+                log.warning(ChatColor.RED + "INVALID " + ChatColor.AQUA + "ENCHANTMENT " + ChatColor.RED + "SETUP IN REWARDPOOLS CONFIG.YML @ " + ChatColor.AQUA + RewardLocation);
                 return null;
             }
         }
         // Set the item lore
-        strLore = ConfigLoc.getStringList(strRewardLocation + ".Item.Lore");
+        Lore = ConfigLoc.getStringList(RewardLocation + ".Item.Lore");
         // Build the item
-        if (matMaterial != null) {
-            istFinalReward.setType(matMaterial);
+        if (material != null) {
+            FinalReward.setType(material);
         } else {
             Sender.sendMessage(ChatColor.RED + "The reward you got seems to have an incorrect Material.");
             Sender.sendMessage(ChatColor.RED + "Please contact an admin, developer or owner about this issue,");
             Sender.sendMessage(ChatColor.RED + "tell them the reward is named " + ChatColor.AQUA + strRewardName + ChatColor.RED + ".");
             Sender.sendMessage(ChatColor.RED + "This error occurred at " + ChatColor.AQUA + getTime() + ChatColor.RED + ".");
-            log.warning(ChatColor.RED + "INVALID " + ChatColor.AQUA + "MATERIALNAME " + ChatColor.RED + "IN REWARDPOOLS CONFIG.YML @ " + ChatColor.AQUA + strRewardLocation);
+            log.warning(ChatColor.RED + "INVALID " + ChatColor.AQUA + "MATERIALNAME " + ChatColor.RED + "IN REWARDPOOLS CONFIG.YML @ " + ChatColor.AQUA + RewardLocation);
             return null;
         }
-        if (intAmount >= 1) {
-            istFinalReward.setAmount(intAmount);
+        if (Amount >= 1) {
+            FinalReward.setAmount(Amount);
         } else {
-            istFinalReward.setAmount(0);
+            FinalReward.setAmount(0);
         }
         // Build the item metadata
-        if (!strName.equals("")) {
-            imeFinalMeta.setDisplayName(strName);
+        if (!Name.equals("")) {
+            FinalMeta.setDisplayName(Name);
         }
         if (!Enchantments.isEmpty()) {
-            imeFinalMeta = TextManager.enchanter(Enchantments, imeFinalMeta, strRewardName);
+            FinalMeta = TextManager.enchanter(Enchantments, FinalMeta, strRewardName);
             // If something is in the enchants but is not a recognized enchant notify log and player something went wrong
-            if (imeFinalMeta == null) {
+            if (FinalMeta == null) {
                 Sender.sendMessage(ChatColor.RED + "The reward you got seems to have incorrect enchantments.");
                 Sender.sendMessage(ChatColor.RED + "Please contact an admin, developer or owner about this issue,");
                 Sender.sendMessage(ChatColor.RED + "tell them the reward is named " + ChatColor.AQUA + strRewardName + ChatColor.RED + ".");
                 Sender.sendMessage(ChatColor.RED + "This error occurred at " + ChatColor.AQUA + getTime() + ChatColor.RED + ".");
-                log.warning(ChatColor.RED + "INVALID " + ChatColor.AQUA + "ENCHANTMENT " + ChatColor.RED + "SETUP IN REWARDPOOLS CONFIG.YML @ " + ChatColor.AQUA + strRewardLocation);
+                log.warning(ChatColor.RED + "INVALID " + ChatColor.AQUA + "ENCHANTMENT " + ChatColor.RED + "SETUP IN REWARDPOOLS CONFIG.YML @ " + ChatColor.AQUA + RewardLocation);
                 return null;
             }
         }
-        if (!strLore.isEmpty()) {
-            for (int i = 0; i <= strLore.size() - 1; i++) {
-                strLore.set(i, TextManager.colorize(strLore.get(i)));
+        if (!Lore.isEmpty()) {
+            for (int i = 0; i <= Lore.size() - 1; i++) {
+                Lore.set(i, TextManager.colorize(Lore.get(i)));
             }
-            imeFinalMeta.setLore(strLore);
+            FinalMeta.setLore(Lore);
         }
         // Put the metadata in the ItemStack
-        istFinalReward.setItemMeta(imeFinalMeta);
-        return istFinalReward;
+        FinalReward.setItemMeta(FinalMeta);
+        return FinalReward;
     }
 
     // Reward manager
@@ -196,14 +195,14 @@ public class RewardManager extends JavaPlugin {
             return;
         }
         // Setting base variables
-        String strRewardName = null;
-        String strRewardSource = "RewardSource." + RewardType;
+        String RewardName = null;
+        String RewardSource = "RewardSource." + RewardType;
         int Chance;
         int TotChance = 0;
         int roll;
         // Getting all possible rewards and their chance
         RewardChances.clear();
-        if (Objects.requireNonNull(ConfigLoc.getConfigurationSection(strRewardSource)).getKeys(false).isEmpty()) {
+        if (Objects.requireNonNull(ConfigLoc.getConfigurationSection(RewardSource)).getKeys(false).isEmpty()) {
             Sender.sendMessage(ChatColor.RED + "The RewardPool you rolled seems not to be empty");
             Sender.sendMessage(ChatColor.RED + "Please contact an admin, developer or owner about this issue,");
             Sender.sendMessage(ChatColor.RED + "tell them there is no rewards in " + ChatColor.AQUA + RewardType + ChatColor.RED + ".");
@@ -211,8 +210,8 @@ public class RewardManager extends JavaPlugin {
             Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.RED + "INVALID " + ChatColor.AQUA + "REWARDS " + ChatColor.RED + "IN REWARDPOOLS CONFIG.YML @ " + ChatColor.AQUA + RewardType);
             return;
         }
-        for (String strReward : Objects.requireNonNull(ConfigLoc.getConfigurationSection(strRewardSource)).getKeys(false)) {
-            RewardChances.put(strReward, Integer.parseInt(Objects.requireNonNull(ConfigLoc.getString(strRewardSource + "." + strReward))));
+        for (String strReward : Objects.requireNonNull(ConfigLoc.getConfigurationSection(RewardSource)).getKeys(false)) {
+            RewardChances.put(strReward, Integer.parseInt(Objects.requireNonNull(ConfigLoc.getString(RewardSource + "." + strReward))));
         }
         // Count up all the chances in the items
         for (String str : RewardChances.keySet()) {
@@ -225,72 +224,65 @@ public class RewardManager extends JavaPlugin {
         for (String str : RewardChances.keySet()) {
             Chance = RewardChances.get(str);
             if (roll <= Chance) {
-                strRewardName = str;
+                RewardName = str;
                 break;
             }
             roll -= Chance;
         }
-        Give(Sender, strRecipient, strRewardName);
+        Give(Sender, strRecipient, RewardName);
     }
 
     // Reward manager
-    public static void Give(CommandSender Sender, String strRecipient, String strRewardName) {
-        Player Recipient = null;
-        Player p = Bukkit.getPlayer(strRecipient);
-        assert p != null;
-        if (p.isOnline()) {
-            Recipient = p;
-        }
-        String strRewardLocation;
-        String strType;
-        String strMessage;
+    public static void Give(CommandSender Sender, String strRecipient, String RewardName) {
+        Player player = Bukkit.getPlayer(strRecipient);
+        assert player != null;
+        String RewardLocation;
+        String Type;
+        String Message;
         // Setting config location to get data from
-        strRewardLocation = "Rewards." + strRewardName;
-        List<String> strCommands = new ArrayList<>();
+        RewardLocation = "Rewards." + RewardName;
+        List<String> Commands = new ArrayList<>();
         ItemStack Reward;
         // Checking if reward exists
-        if (Objects.requireNonNull(ConfigLoc.getConfigurationSection("Rewards")).getKeys(false).contains(strRewardName)) {
-            strType = ConfigLoc.getString(strRewardLocation + ".Type");
+        if (Objects.requireNonNull(ConfigLoc.getConfigurationSection("Rewards")).getKeys(false).contains(RewardName)) {
+            Type = ConfigLoc.getString(RewardLocation + ".Type");
             // Checking type of reward
-            assert strType != null;
-            if (strType.equalsIgnoreCase("Command") || strType.equalsIgnoreCase("Both")) {
+            assert Type != null;
+            if (Type.equalsIgnoreCase("Command") || Type.equalsIgnoreCase("Both")) {
                 // Getting all commands
-                strCommands = ConfigLoc.getStringList(strRewardLocation + ".Commands");
+                Commands = ConfigLoc.getStringList(RewardLocation + ".Commands");
             }
             // Checking type of reward
-            if (strType.equalsIgnoreCase("Item") || strType.equalsIgnoreCase("Both")) {
+            if (Type.equalsIgnoreCase("Item") || Type.equalsIgnoreCase("Both")) {
                 // Setting variables needed to build an ItemStack and its metadata
 
                 // Put the metadata in the ItemStack
-                Reward = ItemBuilder(Sender, strRewardName);
+                Reward = ItemBuilder(Sender, RewardName);
                 if (Reward == null) {
                     return;
                 }
-                assert Recipient != null;
-                Recipient.getInventory().addItem(Reward);
+                player.getInventory().addItem(Reward);
                 if (Objects.requireNonNull(Reward.getItemMeta()).getDisplayName() != null) {
-                    strRewardName = Reward.getItemMeta().getDisplayName();
+                    RewardName = Reward.getItemMeta().getDisplayName();
                 }
             }
             // Send the player a customized message
-            if (ConfigLoc.getString(strRewardLocation + ".Message") != null) {
-                strMessage = TextManager.colorize(Objects.requireNonNull(ConfigLoc.getString(strRewardLocation + ".Message")).replace("%ITEM%", strRewardName));
-                assert Recipient != null;
-                Recipient.sendMessage(strMessage);
+            if (ConfigLoc.getString(RewardLocation + ".Message") != null) {
+                Message = TextManager.colorize(Objects.requireNonNull(ConfigLoc.getString(RewardLocation + ".Message")).replace("%ITEM%", RewardName));
+                player.sendMessage(Message);
             }
             // If the reward does not exist notify logs and the player
         } else {
             Sender.sendMessage(ChatColor.RED + "The reward you got seems not to be in the reward list");
             Sender.sendMessage(ChatColor.RED + "Please contact an admin, developer or owner about this issue,");
-            Sender.sendMessage(ChatColor.RED + "tell them there is no reward named " + ChatColor.AQUA + strRewardName + ChatColor.RED + ".");
+            Sender.sendMessage(ChatColor.RED + "tell them there is no reward named " + ChatColor.AQUA + RewardName + ChatColor.RED + ".");
             return;
         }
-        for (String strCommand : strCommands) {
-            if (!strCommand.equals("")) {
-                strCommand = TextManager.colorize(strCommand);
-                assert Recipient != null;
-                strCommand = strCommand.replace("%player%", Recipient.getName());
-                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), strCommand);
+        for (String Command : Commands) {
+            if (!Command.equals("")) {
+                Command = TextManager.colorize(Command);
+                Command = Command.replace("%player%", player.getName());
+                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), Command);
             }
         }
     }

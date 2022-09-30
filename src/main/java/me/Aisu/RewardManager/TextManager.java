@@ -31,7 +31,7 @@ public class TextManager {
     }
 
     // Apply enchants to a meta with alias conversion
-    static ItemMeta enchanter(HashMap<String, Integer> enchants, ItemMeta startMeta, String strReward) {
+    static ItemMeta enchanter(HashMap<String, Integer> enchants, ItemMeta startMeta, String Reward) {
         String enchant;
         for (String ench : enchants.keySet()) {
             enchant = ench.toLowerCase();
@@ -96,7 +96,7 @@ public class TextManager {
                 try {
                     startMeta.addEnchant(Objects.requireNonNull(Enchantment.getByKey(NamespacedKey.minecraft(enchant))), enchants.get(ench), true);
                 } catch (NullPointerException | IllegalArgumentException e) {
-                    RewardManager.log.warning(ChatColor.RED + "INVALID" + ChatColor.AQUA + " ENCHANTMENT: \"" + enchant + "\"" + ChatColor.RED + " IN REWARDPOOLS CONFIG.YML @ " + ChatColor.AQUA + strReward);
+                    RewardManager.log.warning(ChatColor.RED + "INVALID" + ChatColor.AQUA + " ENCHANTMENT: \"" + enchant + "\"" + ChatColor.RED + " IN REWARDPOOLS CONFIG.YML @ " + ChatColor.AQUA + Reward);
                     return null;
                 }
             }
