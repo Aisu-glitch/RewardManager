@@ -95,7 +95,7 @@ public class RewardManager extends JavaPlugin {
             Sender.sendMessage(ChatColor.RED + "Please contact an admin, developer or owner about this issue,");
             Sender.sendMessage(ChatColor.RED + "tell them the reward is named " + ChatColor.AQUA + strRewardName + ChatColor.RED + ".");
             Sender.sendMessage(ChatColor.RED + "This error occurred at " + ChatColor.AQUA + getTime() + ChatColor.RED + ".");
-            log.warning( ChatColor.RED + "INVALID " + ChatColor.AQUA + "AMOUNT " + ChatColor.RED + "SETUP IN REWARDPOOLS CONFIG.YML @ " + ChatColor.AQUA + RewardLocation);
+            log.warning( ChatColor.RED + "INVALID " + ChatColor.AQUA + "AMOUNT " + ChatColor.RED + "SETUP IN REWARDMANAGER CONFIG.YML @ " + ChatColor.AQUA + RewardLocation);
             return null;
         }
         if (AmountMin != AmountMax) {
@@ -113,7 +113,7 @@ public class RewardManager extends JavaPlugin {
                 try {
                     Enchantments.put(strEnch, Integer.parseInt(Objects.requireNonNull(ConfigLoc.getString(RewardLocation + ".Item.Enchantments." + strEnch))));
                 } catch (NumberFormatException e) {
-                    log.warning(ChatColor.RED + "INVALID " + ChatColor.AQUA + "ENCHANTMENT_LEVEL " + ChatColor.RED + "IN REWARDPOOLS CONFIG.YML @ " + ChatColor.AQUA + RewardLocation + ".Item.Enchantments." + strEnch);
+                    log.warning(ChatColor.RED + "INVALID " + ChatColor.AQUA + "ENCHANTMENT_LEVEL " + ChatColor.RED + "IN REWARDMANAGER CONFIG.YML @ " + ChatColor.AQUA + RewardLocation + ".Item.Enchantments." + strEnch);
                 }
             }
         } catch (NullPointerException e) {
@@ -123,7 +123,7 @@ public class RewardManager extends JavaPlugin {
                 Sender.sendMessage(ChatColor.RED + "Please contact an admin, developer or owner about this issue,");
                 Sender.sendMessage(ChatColor.RED + "tell them the reward is named " + ChatColor.AQUA + strRewardName + ChatColor.RED + ".");
                 Sender.sendMessage(ChatColor.RED + "This error occurred at " + ChatColor.AQUA + getTime() + ChatColor.RED + ".");
-                log.warning(ChatColor.RED + "INVALID " + ChatColor.AQUA + "ENCHANTMENT " + ChatColor.RED + "SETUP IN REWARDPOOLS CONFIG.YML @ " + ChatColor.AQUA + RewardLocation);
+                log.warning(ChatColor.RED + "INVALID " + ChatColor.AQUA + "ENCHANTMENT " + ChatColor.RED + "SETUP IN REWARDMANAGER CONFIG.YML @ " + ChatColor.AQUA + RewardLocation);
                 return null;
             }
         }
@@ -137,7 +137,7 @@ public class RewardManager extends JavaPlugin {
             Sender.sendMessage(ChatColor.RED + "Please contact an admin, developer or owner about this issue,");
             Sender.sendMessage(ChatColor.RED + "tell them the reward is named " + ChatColor.AQUA + strRewardName + ChatColor.RED + ".");
             Sender.sendMessage(ChatColor.RED + "This error occurred at " + ChatColor.AQUA + getTime() + ChatColor.RED + ".");
-            log.warning(ChatColor.RED + "INVALID " + ChatColor.AQUA + "MATERIALNAME " + ChatColor.RED + "IN REWARDPOOLS CONFIG.YML @ " + ChatColor.AQUA + RewardLocation);
+            log.warning(ChatColor.RED + "INVALID " + ChatColor.AQUA + "MATERIALNAME " + ChatColor.RED + "IN REWARDMANAGER CONFIG.YML @ " + ChatColor.AQUA + RewardLocation);
             return null;
         }
         if (Amount >= 1) {
@@ -157,7 +157,7 @@ public class RewardManager extends JavaPlugin {
                 Sender.sendMessage(ChatColor.RED + "Please contact an admin, developer or owner about this issue,");
                 Sender.sendMessage(ChatColor.RED + "tell them the reward is named " + ChatColor.AQUA + strRewardName + ChatColor.RED + ".");
                 Sender.sendMessage(ChatColor.RED + "This error occurred at " + ChatColor.AQUA + getTime() + ChatColor.RED + ".");
-                log.warning(ChatColor.RED + "INVALID " + ChatColor.AQUA + "ENCHANTMENT " + ChatColor.RED + "SETUP IN REWARDPOOLS CONFIG.YML @ " + ChatColor.AQUA + RewardLocation);
+                log.warning(ChatColor.RED + "INVALID " + ChatColor.AQUA + "ENCHANTMENT " + ChatColor.RED + "SETUP IN REWARDMANAGER CONFIG.YML @ " + ChatColor.AQUA + RewardLocation);
                 return null;
             }
         }
@@ -207,7 +207,7 @@ public class RewardManager extends JavaPlugin {
             Sender.sendMessage(ChatColor.RED + "Please contact an admin, developer or owner about this issue,");
             Sender.sendMessage(ChatColor.RED + "tell them there is no rewards in " + ChatColor.AQUA + RewardType + ChatColor.RED + ".");
             Sender.sendMessage(ChatColor.RED + "This error occurred at " + ChatColor.AQUA + getTime() + ChatColor.RED + ".");
-            Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.RED + "INVALID " + ChatColor.AQUA + "REWARDS " + ChatColor.RED + "IN REWARDPOOLS CONFIG.YML @ " + ChatColor.AQUA + RewardType);
+            Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.RED + "INVALID " + ChatColor.AQUA + "REWARDS " + ChatColor.RED + "IN REWARDMANAGER CONFIG.YML @ " + ChatColor.AQUA + RewardType);
             return;
         }
         for (String strReward : Objects.requireNonNull(ConfigLoc.getConfigurationSection(RewardSource)).getKeys(false)) {
@@ -310,22 +310,22 @@ public class RewardManager extends JavaPlugin {
         }
         if (cmd.getName().equalsIgnoreCase("RP") && (sender instanceof Player player)) {
             // Getting player
-            if (player.hasPermission("RewardPools_Manager")) {
+            if (player.hasPermission("RewardManager_Manager")) {
                 switch (args.length) {
                     case 0: {
-                        Bukkit.getConsoleSender().getServer().dispatchCommand(player, "help RewardPools");
+                        Bukkit.getConsoleSender().getServer().dispatchCommand(player, "help RewardManager");
                         return true;
                     }
                     // Check if there is one argument
                     case 1: {
                         // Check if the argument is "Reload"
                         if (args[0].equalsIgnoreCase("Reload")) {
-                            if (player.hasPermission("RewardPools_Manager.Reload")) {
+                            if (player.hasPermission("RewardManager_Manager.Reload")) {
                                 reloadConfig();
                                 for (Player plrTempP : Bukkit.getServer().getOnlinePlayers()) {
-                                    if (plrTempP.hasPermission("RewardPools_Manager")) {
+                                    if (plrTempP.hasPermission("RewardManager_Manager")) {
                                         // "ratting out" who issued the command
-                                        plrTempP.sendMessage(player.getName() + " issued a reload of the RewardPools Chances");
+                                        plrTempP.sendMessage(player.getName() + " issued a reload of the RewardManager Chances");
                                     }
                                 }
                                 return true;
@@ -333,7 +333,7 @@ public class RewardManager extends JavaPlugin {
                         }
                     }
                     case 2: {
-                        Bukkit.getConsoleSender().getServer().dispatchCommand(player, "help RewardPools");
+                        Bukkit.getConsoleSender().getServer().dispatchCommand(player, "help RewardManager");
                         return true;
                     }
                     case 3: {
