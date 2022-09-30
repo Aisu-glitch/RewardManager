@@ -28,23 +28,31 @@ public class RewardManager extends JavaPlugin {
     public void onEnable() {
         // Initiating the TextManager class
         new TextManager(this);
-        // Check if there is a directory, if not make one
-        if (!getDataFolder().exists()) {
-            getDataFolder().mkdir();
-        }
-        // If there is no default config, create it
-        ConfigFile = new File(getDataFolder(), "config.yml");
-        if (!ConfigFile.exists()) {
-            saveDefaultConfig();
-        }
-        reloadConfig();
-        // Create an intractable copy of the config
-        ConfigLoc = YamlConfiguration.loadConfiguration(ConfigFile);
+        // Enable log handling
         log = Logger.getLogger("Minecraft");
         for (Handler h : log.getParent().getHandlers()) {
             log.addHandler(h);
         }
         log.setUseParentHandlers(false);
+
+        // Check if there is a directory, if not make one
+        if (!getDataFolder().exists()) {
+            log.info("RewardManager: There is no Data Folder present for this plugin.");
+            if (!getDataFolder().mkdir()) {
+                log.info("RewardManager: Failed to make Data folder.");
+            } else {
+                log.info("RewardManager: Succesfully made Data folder.");
+            }
+        } else {
+            ConfigFile = new File(getDataFolder(), "config.yml");
+            // If there is no default config, create it
+            if (!ConfigFile.exists()) {
+                saveDefaultConfig();
+            }
+            // Create an intractable copy of the config
+            reloadConfig();
+        }
+
         log.info("RewardManager V0.0.1 Enabled");
     }
 
