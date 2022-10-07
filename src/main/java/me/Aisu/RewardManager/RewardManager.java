@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -119,11 +120,7 @@ public class RewardManager extends JavaPlugin {
         } catch (NullPointerException e) {
             // If something is in the enchants but is not a recognized enchant notify log and player something went wrong
             if (!ConfigLoc.getStringList(RewardLocation + ".Item.Enchantments").isEmpty()) {
-                Sender.sendMessage(ChatColor.RED + "The reward you got seems to have incorrect enchantments.");
-                Sender.sendMessage(ChatColor.RED + "Please contact an admin, developer or owner about this issue,");
-                Sender.sendMessage(ChatColor.RED + "tell them the reward is named " + ChatColor.AQUA + strRewardName + ChatColor.RED + ".");
-                Sender.sendMessage(ChatColor.RED + "This error occurred at " + ChatColor.AQUA + getTime() + ChatColor.RED + ".");
-                log.warning(ChatColor.RED + "INVALID " + ChatColor.AQUA + "ENCHANTMENT " + ChatColor.RED + "SETUP IN REWARDMANAGER CONFIG.YML @ " + ChatColor.AQUA + RewardLocation);
+                announceEnchantmentError(Sender, strRewardName, RewardLocation);
                 return null;
             }
         }
@@ -147,17 +144,14 @@ public class RewardManager extends JavaPlugin {
         }
         // Build the item metadata
         if (!Name.equals("")) {
+            assert FinalMeta != null;
             FinalMeta.setDisplayName(Name);
         }
         if (!Enchantments.isEmpty()) {
             FinalMeta = TextManager.enchanter(Enchantments, FinalMeta, strRewardName);
             // If something is in the enchants but is not a recognized enchant notify log and player something went wrong
             if (FinalMeta == null) {
-                Sender.sendMessage(ChatColor.RED + "The reward you got seems to have incorrect enchantments.");
-                Sender.sendMessage(ChatColor.RED + "Please contact an admin, developer or owner about this issue,");
-                Sender.sendMessage(ChatColor.RED + "tell them the reward is named " + ChatColor.AQUA + strRewardName + ChatColor.RED + ".");
-                Sender.sendMessage(ChatColor.RED + "This error occurred at " + ChatColor.AQUA + getTime() + ChatColor.RED + ".");
-                log.warning(ChatColor.RED + "INVALID " + ChatColor.AQUA + "ENCHANTMENT " + ChatColor.RED + "SETUP IN REWARDMANAGER CONFIG.YML @ " + ChatColor.AQUA + RewardLocation);
+                announceEnchantmentError(Sender, strRewardName, RewardLocation);
                 return null;
             }
         }
@@ -165,11 +159,20 @@ public class RewardManager extends JavaPlugin {
             for (int i = 0; i <= Lore.size() - 1; i++) {
                 Lore.set(i, TextManager.colorize(Lore.get(i)));
             }
+            assert FinalMeta != null;
             FinalMeta.setLore(Lore);
         }
         // Put the metadata in the ItemStack
         FinalReward.setItemMeta(FinalMeta);
         return FinalReward;
+    }
+
+    private static void announceEnchantmentError(CommandSender Sender, String strRewardName, String rewardLocation) {
+        Sender.sendMessage(ChatColor.RED + "The reward you got seems to have incorrect enchantments.");
+        Sender.sendMessage(ChatColor.RED + "Please contact an admin, developer or owner about this issue,");
+        Sender.sendMessage(ChatColor.RED + "tell them the reward is named " + ChatColor.AQUA + strRewardName + ChatColor.RED + ".");
+        Sender.sendMessage(ChatColor.RED + "This error occurred at " + ChatColor.AQUA + getTime() + ChatColor.RED + ".");
+        log.warning(ChatColor.RED + "INVALID " + ChatColor.AQUA + "ENCHANTMENT " + ChatColor.RED + "SETUP IN REWARDMANAGER CONFIG.YML @ " + ChatColor.AQUA + rewardLocation);
     }
 
     // Reward manager
@@ -262,9 +265,8 @@ public class RewardManager extends JavaPlugin {
                     return;
                 }
                 player.getInventory().addItem(Reward);
-                if (Objects.requireNonNull(Reward.getItemMeta()).getDisplayName() != null) {
-                    RewardName = Reward.getItemMeta().getDisplayName();
-                }
+                Objects.requireNonNull(Reward.getItemMeta()).getDisplayName();
+                RewardName = Reward.getItemMeta().getDisplayName();
             }
             // Send the player a customized message
             if (ConfigLoc.getString(RewardLocation + ".Message") != null) {
@@ -288,7 +290,7 @@ public class RewardManager extends JavaPlugin {
     }
 
     // Command listener
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         // Checking if command was issued towards this plugin
         if (cmd.getName().equalsIgnoreCase("RM") && !(sender instanceof Player)) {
             switch (args.length) {
